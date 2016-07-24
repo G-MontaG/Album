@@ -1,0 +1,15 @@
+{
+  "name": "angular2",
+  "version": false,
+  "globalDependencies": {
+    "accounting": "registry:dt/accounting#0.3.2+20160316155526",
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
+    "lodash": "registry:dt/lodash#3.10.0+20160619033623",
+    "moment": "registry:dt/moment#2.8.0+20160316155526",
+    "moment-node": "registry:dt/moment-node#2.11.1+20160511043338",
+    "node": "registry:dt/node#6.0.0+20160709114037",
+    "toastr": "registry:dt/toastr#2.1.1+20160510010435"
+  }
+}
