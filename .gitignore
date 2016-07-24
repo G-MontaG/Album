@@ -51,3 +51,6 @@ atlassian-ide-plugin.xml
 .env
 public
 typings
+
+**/*.d.ts
+**/*.js
