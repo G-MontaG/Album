@@ -1,0 +1,53 @@
+{
+  "name": "Chat",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "",
+  "license": "Apache Licence 2.0",
+  "author": {
+    "name": "Arthur Osipenko",
+    "email": "arthur.osipenko@gmail.com",
+    "url": "https://github.com/G-MontaG"
+  },
+  "contributors": [],
+  "main": "server.js",
+  "engines": {
+    "node": ">=5.8.0",
+    "npm": ">=3.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "express-validator": "^2.20.8",
+    "jsonwebtoken": "^5.7.0",
+    "lodash": "^4.13.1",
+    "lusca": "^1.4.1",
+    "method-override": "^2.3.6",
+    "moment": "^2.14.1",
+    "mongoose": "^4.5.3",
+    "multer": "^1.1.0",
+    "nodemailer": "^2.5.0",
+    "passport": "^0.3.2",
+    "password-generator": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2",
+    "tslint": "^3.13.0",
+    "typescript": "^1.8.10",
+    "typings": "^0.7.12"
+  },
+  "scripts": {
+    "postinstall": "typings i --save",
+    "server": "nodemon server.js"
+  }
+}
