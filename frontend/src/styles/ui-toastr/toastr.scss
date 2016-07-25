@@ -1,0 +1,15 @@
+.toast {
+  background-color: darken($gray-4, 10%);
+}
+.toast-success {
+  background-color: darken($secondary-green, 10%);
+}
+.toast-error {
+  background-color: darken($secondary-red, 10%);
+}
+.toast-info {
+  background-color: darken($secondary-blue, 10%);
+}
+.toast-warning {
+  background-color: darken($secondary-orange, 10%);
+}

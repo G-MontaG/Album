@@ -1,0 +1,13 @@
+@mixin truncate() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin break-word() {
+  word-wrap: break-word;
+}
+
+@mixin no-wrap() {
+  white-space: nowrap !important;
+}

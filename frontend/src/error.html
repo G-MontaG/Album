@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="copyright" content="">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <style>
+        .error-page {
+            height: 100vh;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .error-page .center-flex {
+            flex-wrap: wrap;
+        }
+        .error-page h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        .error-page strong {
+            font-size: 60px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: #B24C3B;
+        }
+        @media (min-width:992px) {
+            .error-page {
+                padding-top: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+<section class="error-page">
+    <div class="center-flex">
+        <h1><strong><%= status %></strong></h1>
+        <h2><%= message %></h2>
+        <h4></h4>
+    </div>
+</section>
+</body>
+</html>

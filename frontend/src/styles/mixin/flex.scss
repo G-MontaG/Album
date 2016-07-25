@@ -1,0 +1,14 @@
+@mixin flex-container($type, $align-items: null, $justify-content: null, $align-content: null, $flex-direction: null, $flex-wrap: null) {
+  display: $type;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  align-content: $align-content;
+  flex-direction: $flex-direction;
+  flex-wrap: $flex-wrap;
+}
+
+@mixin flex-item($flex: null, $align-self: null, $order: null) {
+  flex: $flex;
+  align-self: $align-self;
+  order: $order;
+}
