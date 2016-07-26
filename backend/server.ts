@@ -1,75 +1,85 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+import fs = require('fs');
+import path = require('path');
 
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const compress = require('compression');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const lusca = require('lusca');
-const dotenv = require('dotenv');
-const session = require('express-session');
-const expressValidator = require('express-validator');
-const multer = require('multer');
+import express = require('express');
+import cookieParser = require('cookie-parser');
+import compress = require('compression');
+import bodyParser = require('body-parser');
+import logger = require('morgan');
+import lusca = require('lusca');
+import dotenv = require('dotenv');
+import session = require('express-session');
+import expressValidator = require('express-validator');
+import multer = require('multer');
 const upload = multer({dest: path.join(__dirname, 'uploads')});
 
 dotenv.load({path: '.env'});
 
-require('./db');
+import './db';
 
-const app = express();
-app.set('port', process.env.SERVER_PORT || 3000);
+class Server {
+  public app:express.Application;
 
-app.use(compress(6));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(expressValidator());
-app.use(cookieParser());
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET
-}));
-app.use(function (req, res, next) {
-  if (req.path === '/api/upload') {
-    next();
-  } else {
-    //lusca.csrf()(req, res, next);
-    next();
+  constructor() {
+    this.app = express();
+    this.app.set('port', process.env.SERVER_PORT || 3000);
+
+    this.app.use(compress(6));
+    this.app.use(logger('dev'));
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({extended: true}));
+    this.app.use(expressValidator());
+    this.app.use(cookieParser());
+    this.app.use(session({
+      resave: true,
+      saveUninitialized: true,
+      secret: process.env.SESSION_SECRET
+    }));
+    this.app.use(function (req:express.Request, res:express.Response, next:express.NextFunction) {
+      if (req.path === '/api/upload') {
+        next();
+      } else {
+        //lusca.csrf()(req, res, next);
+        next();
+      }
+    });
+    // this.app.use(lusca({
+    //   csp: {/* ... */},
+    //   xframe: 'SAMEORIGIN',
+    //   p3p: 'ABCDEF',
+    //   hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
+    //   xssProtection: true
+    // }));
+
+    this.app.use(express.static(path.join(__dirname, '../frontend/public'), {maxAge: 31557600000}));
+
+    this.configureRoutes();
+
+    this.app.listen(this.app.get('port'), function () {
+      console.log(`Server listening on port ${this.app.get('port')} in ${this.app.get('env')} mode`);
+    }.bind(this));
   }
-});
-// app.use(lusca({
-//   csp: {/* ... */},
-//   xframe: 'SAMEORIGIN',
-//   p3p: 'ABCDEF',
-//   hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
-//   xssProtection: true
-// }));
 
-app.use(express.static(path.join(__dirname, '../frontend/public'), {maxAge: 31557600000}));
+  configureRoutes() {
+    this.app.all("/*", function (req:express.Request, res:express.Response, next:express.NextFunction) {
+      res.sendfile("index.html", {root: path.join(__dirname, '../frontend/public')});
+    });
 
-app.all("/*", function(req, res, next) {
-  res.sendfile("index.html", {root: path.join(__dirname, '../frontend/public')});
-});
+    this.app.use(function (req:express.Request, res:express.Response, next:express.NextFunction) {
+      let err = new Error("Not Found");
+      next(err);
+    });
 
-app.use(function(req, res, next) {
-  let err = new Error("Not Found");
-  next(err);
-});
+    this.app.use(function (err:any, req:express.Request, res:express.Response, next:express.NextFunction) {
+      res.status(err.status || 500);
+      res.json({
+        error: {},
+        message: err.message
+      });
+    });
+  }
+}
 
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.json({
-    error: {},
-    message: err.message
-  });
-});
-
-app.listen(app.get('port'), function () {
-  console.log(`Server listening on port ${app.get('port')} in ${app.get('env')} mode`);
-});
-
-module.exports = app;
+new Server();
