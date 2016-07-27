@@ -8,6 +8,6 @@ import { HTTP_PROVIDERS } from '@angular/http';
 
 import './main.scss';
 
-bootstrap(<any>AppComponent, [
-  HTTP_PROVIDERS, appRouterProviders
+bootstrap(AppComponent, [
+  appRouterProviders, HTTP_PROVIDERS
 ]).catch(err => console.error(err));
