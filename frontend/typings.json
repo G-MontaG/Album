@@ -3,7 +3,6 @@
   "version": false,
   "globalDependencies": {
     "accounting": "registry:dt/accounting#0.3.2+20160316155526",
-    "core-js": "registry:dt/core-js#0.0.0+20160602141332",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "lodash": "registry:dt/lodash#3.10.0+20160619033623",
