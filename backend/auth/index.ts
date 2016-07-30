@@ -7,7 +7,7 @@ import {loginHandler} from './login';
 
 export class AuthController {
   public configurations: Array<routerConfiguration>;
-  public login: handlerFunction;
+  private login: handlerFunction;
 
   constructor() {
     this.login = loginHandler;

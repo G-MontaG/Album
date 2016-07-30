@@ -19,7 +19,7 @@ dotenv.config({path: '.env'});
 
 import './db';
 
-import {authRouter} from './auth/index';
+import {authRouter} from './auth';
 
 class Server {
   public app:express.Application;
