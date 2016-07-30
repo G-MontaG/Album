@@ -6,8 +6,10 @@ export const authRouter = require('express').Router();
 import {loginHandler} from './login';
 
 export class AuthController {
-  constructor(public configurations: Array<routerConfiguration>,
-  public login: handlerFunction) {
+  public configurations: Array<routerConfiguration>;
+  public login: handlerFunction;
+
+  constructor() {
     this.login = loginHandler;
 
     this.configurations = [
@@ -23,3 +25,5 @@ export class AuthController {
     });
   }
 }
+
+export const authController = new AuthController();
