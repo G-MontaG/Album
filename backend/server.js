@@ -45,7 +45,7 @@ class Server {
         //   hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
         //   xssProtection: true
         // }));
-        this.app.use('/', express.static(path.join(__dirname, '../frontend/public'), { maxAge: 31557600000 }));
+        this.app.use('/', express.static(path.join(__dirname, '../frontend/public')));
         this.configureRoutes();
         this.configureErrorHandlers();
         this.app.listen(this.app.get('port'), function () {

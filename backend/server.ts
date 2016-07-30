@@ -55,7 +55,7 @@ class Server {
     //   xssProtection: true
     // }));
 
-    this.app.use('/', express.static(path.join(__dirname, '../frontend/public'), {maxAge: 31557600000}));
+    this.app.use('/', express.static(path.join(__dirname, '../frontend/public')));
 
     this.configureRoutes();
 
