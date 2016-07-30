@@ -53,7 +53,6 @@ public
 typings
 
 **/*.js
-**/*.d.ts
 
 !frontend/webpack.config.dev.js
 !frontend/webpack.config.prod.js

@@ -11,6 +11,7 @@
     "express-session": "registry:dt/express-session#0.0.0+20160331200931",
     "express-validator": "registry:dt/express-validator#2.9.0+20160412125233",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+    "jsonwebtoken": "registry:dt/jsonwebtoken#0.0.0+20160720062725",
     "lodash": "registry:dt/lodash#3.10.0+20160619033623",
     "mime": "registry:dt/mime#0.0.0+20160316155526",
     "moment": "registry:dt/moment#2.8.0+20160316155526",

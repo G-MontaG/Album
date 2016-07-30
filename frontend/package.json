@@ -33,7 +33,6 @@
     "angular2-in-memory-web-api": "^0.0.14",
     "accounting": "^0.4.1",
     "core-js": "^2.4.0",
-    "es6-shim": "^0.35.1",
     "font-awesome": "^4.6.3",
     "jquery": "^2.2.4",
     "lodash": "^4.13.1",
@@ -69,7 +68,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "postinstall": "typings i --save",
+    "postinstall": "typings i --save --global",
     "dev": "webpack --config='webpack.config.dev.js' --progress --debug --display-chunks --display-reasons --display-error-details",
     "prod": "webpack --config='webpack.config.prod.js' --progress --display-chunks --display-reasons --display-error-details"
   }

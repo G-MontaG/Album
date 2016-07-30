@@ -8,7 +8,7 @@ import cookieParser = require('cookie-parser');
 import compress = require('compression');
 import bodyParser = require('body-parser');
 import logger = require('morgan');
-import lusca = require('lusca');
+//import lusca = require('lusca');
 import dotenv = require('dotenv');
 import session = require('express-session');
 import expressValidator = require('express-validator');
@@ -18,6 +18,8 @@ const upload = multer({dest: path.join(__dirname, 'uploads')});
 dotenv.config({path: '.env'});
 
 import './db';
+
+import {authRouter} from './auth/index';
 
 class Server {
   public app:express.Application;
@@ -53,31 +55,44 @@ class Server {
     //   xssProtection: true
     // }));
 
-    this.app.use(express.static(path.join(__dirname, '../frontend/public'), {maxAge: 31557600000}));
+    this.app.use('/', express.static(path.join(__dirname, '../frontend/public'), {maxAge: 31557600000}));
 
     this.configureRoutes();
+
+    this.configureErrorHandlers();
 
     this.app.listen(this.app.get('port'), function () {
       console.log(`Server listening on port ${this.app.get('port')} in ${this.app.get('env')} mode`);
     }.bind(this));
   }
 
+  addNamespace(namespace:string, router) {
+    this.app.use(namespace, router);
+  }
+
   configureRoutes() {
-    this.app.all("/*", function (req:express.Request, res:express.Response, next:express.NextFunction) {
-      res.sendfile("index.html", {root: path.join(__dirname, '../frontend/public')});
-    });
+    this.addNamespace('/auth', authRouter);
+  }
 
-    this.app.use(function (req:express.Request, res:express.Response, next:express.NextFunction) {
-      let err = new Error("Not Found");
-      next(err);
-    });
+  configureErrorHandlers() {
+    this.addNamespace('*', (req:express.Request, res:express.Response, next:express.NextFunction) => {
+      res.status(404);
 
-    this.app.use(function (err:any, req:express.Request, res:express.Response, next:express.NextFunction) {
-      res.status(err.status || 500);
-      res.json({
-        error: {},
-        message: err.message
-      });
+      var rootDir = path.join(__dirname, '../frontend/public');
+      if (req.accepts('html')) {
+        res.sendFile('error.html', {root: rootDir}, function (err: serverError) {
+          if (err) {
+            console.log(err);
+            res.status(err.status).end();
+          }
+        });
+      } else if (req.accepts('json')) {
+        res.json({
+          errors: [
+            {message: 'Not found'}
+          ]
+        });
+      }
     });
   }
 }
