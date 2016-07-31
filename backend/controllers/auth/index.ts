@@ -1,6 +1,6 @@
 import _ = require('lodash');
 
-import {routerConfiguration, handlerFunction, middlewareFunction} from "../../routerConfiguration";
+import {RouterConfiguration, handlerFunction, middlewareFunction} from "../../routerConfiguration";
 export const authRouter = require('express').Router();
 
 import {checkToken} from './check';
@@ -14,7 +14,7 @@ import {facebookCodeHandler, facebookTokenHandler, facebookUserHandler} from './
 import {googleCodeHandler, googleTokenHandler, googleUserHandler} from './google';
 
 export class AuthController {
-  public configurations:Array<routerConfiguration>;
+  public configurations:Array<RouterConfiguration>;
   public checkToken:middlewareFunction;
   private login:handlerFunction;
   private signupLocal:handlerFunction;

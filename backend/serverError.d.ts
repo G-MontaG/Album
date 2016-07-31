@@ -1,3 +1,3 @@
-interface serverError extends Error{
+interface ServerError extends Error{
   status?: number
 }

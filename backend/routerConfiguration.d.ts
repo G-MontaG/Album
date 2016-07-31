@@ -1,6 +1,6 @@
 import express = require('express');
 
-interface routerConfiguration {
+interface RouterConfiguration {
   type:string,
   route:string,
   handler:handlerFunction,

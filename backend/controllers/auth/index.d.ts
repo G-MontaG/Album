@@ -1,7 +1,7 @@
-import { routerConfiguration, middlewareFunction } from "../../routerConfiguration";
+import { RouterConfiguration, middlewareFunction } from "../../routerConfiguration";
 export declare const authRouter: any;
 export declare class AuthController {
-    configurations: Array<routerConfiguration>;
+    configurations: Array<RouterConfiguration>;
     checkToken: middlewareFunction;
     private login;
     private signupLocal;

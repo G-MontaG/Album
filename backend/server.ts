@@ -80,7 +80,7 @@ class Server {
 
       var rootDir = path.join(__dirname, '../frontend/public');
       if (req.accepts('html')) {
-        res.sendFile('error.html', {root: rootDir}, function (err: serverError) {
+        res.sendFile('error.html', {root: rootDir}, function (err:ServerError) {
           if (err) {
             console.log(err);
             res.status(err.status).end();
