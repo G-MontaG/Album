@@ -1,6 +1,6 @@
 import _ = require('lodash');
 
-import {routerConfiguration, handlerFunction} from "../routerConfiguration";
+import {routerConfiguration, handlerFunction} from "../../routerConfiguration";
 export const authRouter = require('express').Router();
 
 import {loginHandler} from './login';

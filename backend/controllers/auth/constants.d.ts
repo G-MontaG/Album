@@ -1,0 +1,10 @@
+import nodemailer = require('nodemailer');
+export declare const passwordMinLength: number;
+export declare const passwordMaxLength: number;
+export declare const tokenAlg: string;
+export declare const tokenExp: number;
+export declare const emailTokenLength: number;
+export declare const emailTokenExp: number;
+export declare const expTimeAttempts: number;
+export declare const transporter: nodemailer.Transporter;
+export declare function generateEmailToken(user: any, type: any): any;
