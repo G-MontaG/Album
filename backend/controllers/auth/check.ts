@@ -2,9 +2,9 @@ import express = require('express');
 const jwt = require('jsonwebtoken');
 
 import {ServerMessage} from '../../helpers/serverMessage';
-import {RequestWithUserId} from "./requestSession";
+import {RequestWithAuthSession} from "./requestSession";
 
-export function checkToken (req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
+export function checkToken (req: RequestWithAuthSession, res: express.Response, next: express.NextFunction) {
   if (!req.get('Authorization')) {
     ServerMessage.error(next, 401, 'Token is undefined');
   }
