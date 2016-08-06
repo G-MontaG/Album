@@ -57,10 +57,14 @@ class Server {
     //   xssProtection: true
     // }));
 
-    this.app.use('/', express.static(path.join(__dirname, '../frontend/public')));
+    this.app.use(express.static(path.join(__dirname, '../frontend/public')));
     this.app.disable('x-powered-by');
 
     this.configureRoutes();
+
+    this.app.get('/*', function (req:express.Request, res:express.Response, next:express.NextFunction) {
+      res.sendfile("index.html", {root: path.join(__dirname, '../frontend/public')});
+    });
 
     this.configureErrorHandlers();
 
