@@ -1,5 +1,5 @@
 import { RouterConfiguration, middlewareFunction } from "../../routerConfiguration";
-export declare const authRouter: any;
+export declare let authRouter: any;
 export declare class AuthController {
     configurations: Array<RouterConfiguration>;
     checkToken: middlewareFunction;

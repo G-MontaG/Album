@@ -21,6 +21,8 @@ import './db';
 
 import {authRouter} from './controllers/auth';
 
+import {ServerMessage} from './helpers/serverMessage';
+
 class Server {
   public app:express.Application;
 
@@ -77,22 +79,11 @@ class Server {
 
   configureErrorHandlers() {
     this.addNamespace('*', (req:express.Request, res:express.Response, next:express.NextFunction) => {
-      res.status(404);
-
       var rootDir = path.join(__dirname, '../frontend/public');
       if (req.accepts('html')) {
-        res.sendFile('error.html', {root: rootDir}, function (err:ServerError) {
-          if (err) {
-            console.log(err);
-            res.status(err.status).end();
-          }
-        });
+        res.sendFile('error.html', {root: rootDir});
       } else if (req.accepts('json')) {
-        res.json({
-          errors: [
-            {message: 'Not found'}
-          ]
-        });
+        ServerMessage.error(res, 404, 'Page not found');
       }
     });
   }

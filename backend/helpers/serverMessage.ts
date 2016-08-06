@@ -5,7 +5,7 @@ export class ServerMessage {
 
   }
 
-  static error(next: express.NextFunction, status: number, message: string) {
+  static error(res: express.Response, status: number, message: string) {
     let _status = status || 500;
     let _message = message || '';
     let err = {
@@ -13,7 +13,7 @@ export class ServerMessage {
       message: _message,
       error: new Error(_message)
     };
-    next(err);
+    res.send(err);
   };
 
   static message(res: express.Response, status: number, data: any) {

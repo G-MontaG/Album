@@ -4,7 +4,7 @@ interface RouterConfiguration {
   type:string,
   route:string,
   handler:handlerFunction,
-  middleware?:middlewareFunction
+  middleware?:Array<middlewareFunction>
 }
 
 interface handlerFunction {

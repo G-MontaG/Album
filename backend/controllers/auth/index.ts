@@ -1,7 +1,7 @@
 import _ = require('lodash');
 
 import {RouterConfiguration, handlerFunction, middlewareFunction} from "../../routerConfiguration";
-export const authRouter = require('express').Router();
+export let authRouter = require('express').Router();
 
 import {checkToken} from './check';
 import {loginHandler} from './login';
@@ -57,15 +57,15 @@ export class AuthController {
       {type: 'post', route: '/forgot-password/token', handler: this.forgotPasswordToken},
       {
         type: 'post', route: '/forgot-password/new-password', handler: this.forgotPasswordNewPassword,
-        middleware: this.checkToken
+        middleware: [this.checkToken]
       },
       {
         type: 'post', route: '/reset-password', handler: this.resetPassword,
-        middleware: this.checkToken
+        middleware: [this.checkToken]
       },
       {
         type: 'post', route: '/verify-email', handler: this.verifyEmailToken,
-        middleware: this.checkToken
+        middleware: [this.checkToken]
       },
       {type: 'get', route: '/facebook-auth', handler: this.facebookCode},
       {type: 'get', route: '/facebook-auth/response', handler: this.facebookToken},
