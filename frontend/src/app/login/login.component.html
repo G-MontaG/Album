@@ -7,8 +7,51 @@
       Google
     </button>
     <hr>
-    <form action="">
-
+    <form id="loginForm" role="form" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+      <div class="form-group">
+        <label class="control-label" for="loginFormEmail">Email</label>
+        <input type="text" id="loginFormEmail" class="form-control" required
+               formControlName="email">
+        <div *ngIf="email.dirty && !email.valid">
+          <div class="alert alert-danger" role="alert" [hidden]="!email.errors.minlength">
+            Email field must have more then 8 characters
+          </div>
+          <div class="alert alert-danger" role="alert" [hidden]="email.errors.minlength && !email.errors.isEmail">
+            Email not valid
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="loginFormPassword">Password</label>
+        <input type="password" id="loginFormPassword" class="form-control" required
+               formControlName="password">
+        <div *ngIf="password.dirty && !password.valid">
+          <div class="alert alert-danger" role="alert" [hidden]="!password.errors.minlength">
+            Password field must have more then 8 characters
+          </div>
+          <div class="alert alert-danger" role="alert" [hidden]="!password.errors.maxlength">
+            Password field must have no more then 30 characters
+          </div>
+          <div class="alert alert-danger" role="alert"
+               [hidden]="password.errors.minlength && !password.errors.isPassword">
+            Password must meet the following rules:
+            <ul>
+              <li>At least one upper case english letter</li>
+              <li>At least one lower case english letter</li>
+              <li>At least one digit</li>
+              <li>At least one special character</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p>If you forgot your password you can <a type="router" (click)="toForgot()">reset it</a>.</p>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.valid">Login</button>
+      </div>
     </form>
   </div>
+  <!--<div class="login__to-signup">-->
+    <!--Вы еще не зарегистрированы на XXX?-->
+    <!--<a type="router" (click)="toSignup()">Зарегистрироваться</a>-->
+  <!--</div>-->
 </div>
