@@ -1,0 +1,67 @@
+<div class="reset">
+  <div class="reset__form">
+    <div class="reset__content">
+      <button type="button" class="btn btn-default btn-block" routerLink="/dashboard">Back to Dashboard</button>
+      <hr>
+      <form id="resetPasswordForm" role="form" [formGroup]="resetPasswordForm" (ngSubmit)="resetPasswordSubmit()">
+        <div class="form-group">
+          <label class="control-label" for="resetFormPassword">Password</label>
+          <input type="password" id="resetFormPassword" class="form-control"
+                 formControlName="password">
+          <div *ngIf="password.dirty && !password.valid" >
+            <div class="alert alert-danger" role="alert" [hidden]="!password.errors.minlength">
+              Password field must have more then 8 characters
+            </div>
+            <div class="alert alert-danger" role="alert" [hidden]="!password.errors.maxlength">
+              Password field must have no more then 30 characters
+            </div>
+            <div class="alert alert-danger" role="alert" [hidden]="password.errors.minlength && !password.errors.isPassword">
+              Password must meet the following rules:
+              <ul>
+                <li>At least one upper case english letter</li>
+                <li>At least one lower case english letter</li>
+                <li>At least one digit</li>
+                <li>At least one special character</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="resetFormNewPassword">New password</label>
+          <input type="password" id="resetFormNewPassword" class="form-control"
+                 formControlName="newPassword">
+          <div *ngIf="newPassword.dirty && !newPassword.valid" >
+            <div class="alert alert-danger" role="alert" [hidden]="!newPassword.errors.minlength">
+              Password field must have more then 8 characters
+            </div>
+            <div class="alert alert-danger" role="alert" [hidden]="!newPassword.errors.maxlength">
+              Password field must have no more then 30 characters
+            </div>
+            <div class="alert alert-danger" role="alert" [hidden]="newPassword.errors.minlength && !newPassword.errors.isPassword">
+              Password must meet the following rules:
+              <ul>
+                <li>At least one upper case english letter</li>
+                <li>At least one lower case english letter</li>
+                <li>At least one digit</li>
+                <li>At least one special character</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="resetFormConfirm">Confirm password</label>
+          <input type="password" id="resetFormConfirm" class="form-control"
+                 formControlName="confirm">
+          <div *ngIf="confirm.dirty && !confirm.valid">
+            <div class="alert alert-danger" role="alert" [hidden]="confirm.errors.isEqual">
+              Confirm field must be the same as password
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="!resetPasswordForm.valid">Set new password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
