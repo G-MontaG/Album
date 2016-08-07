@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
 import {REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, ROUTER_DIRECTIVES} from "@angular/router";
 
 import {LoginService} from "./login.service";
 import {FormValidationService} from "../shared/form-validation.service";
@@ -9,7 +9,7 @@ import {FormValidationService} from "../shared/form-validation.service";
 @Component({
   selector: 'login',
   template: require('./login.component.html'),
-  directives: [REACTIVE_FORM_DIRECTIVES],
+  directives: [REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES],
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
@@ -41,29 +41,21 @@ export class LoginComponent implements OnInit {
 
   }
 
-  onLoginSubmit() {
+  loginSubmit() {
     this._loginService.postLogin(this.loginForm.value).subscribe(
       data => this._router.navigate(['Dashboard'])
     );
   }
 
-  onGoogleSubmit() {
+  loginGoogleSubmit() {
     this._loginService.getGoogle().subscribe(
       data => window.location.href = data.redirectUrl
     );
   }
 
-  onFacebookSubmit() {
+  loginFacebookSubmit() {
     this._loginService.getFacebook().subscribe(
       data => window.location.href = data.redirectUrl
     );
-  }
-
-  toSignup() {
-    this._router.navigate(['Signup']);
-  }
-
-  toForgot() {
-    this._router.navigate(['Forgot']);
   }
 }

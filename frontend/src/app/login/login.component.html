@@ -1,13 +1,15 @@
 <div class="login">
   <div class="login__form">
-    <button type="button" class="login-facebook-btn btn btn-default btn-lg btn-block">
+    <button type="button" class="login-facebook-btn btn btn-default btn-block"
+            (click)="loginFacebookSubmit()">
       Facebook
     </button>
-    <button class="login-google-btn btn btn-default btn-lg btn-block">
+    <button class="login-google-btn btn btn-default btn-block"
+            (click)="loginGoogleSubmit()">
       Google
     </button>
-    <hr>
-    <form id="loginForm" role="form" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+    <hr class="or">
+    <form id="loginForm" role="form" [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
       <div class="form-group">
         <label class="control-label" for="loginFormEmail">Email</label>
         <input type="text" id="loginFormEmail" class="form-control" required
@@ -44,14 +46,11 @@
           </div>
         </div>
       </div>
-      <p>If you forgot your password you can <a type="router" (click)="toForgot()">reset it</a>.</p>
+      <p>If not register go to <a routerLink="/signup">signup</a>.</p>
+      <p>If you forgot your password you can <a type="router" routerLink="/forgot">reset it</a>.</p>
       <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.valid">Login</button>
       </div>
     </form>
   </div>
-  <!--<div class="login__to-signup">-->
-    <!--Вы еще не зарегистрированы на XXX?-->
-    <!--<a type="router" (click)="toSignup()">Зарегистрироваться</a>-->
-  <!--</div>-->
 </div>

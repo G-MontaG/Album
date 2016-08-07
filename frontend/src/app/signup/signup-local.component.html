@@ -1,0 +1,74 @@
+<a type="button" class="btn btn-primary" routerLink="/signup">Back to external</a>
+<hr>
+<form id="signupLocalForm" role="form" [formGroup]="signupLocalForm" (ngSubmit)="signupLocalSubmit()">
+  <div formGroupName="profile">
+    <div class="form-group">
+      <label class="control-label" for="signupLocalFormFirstname">First name</label>
+      <input type="text" id="signupLocalFormFirstname" class="form-control"
+             formControlName="firstname">
+      <div *ngIf="firstname.dirty && !firstname.valid">
+        <div class="alert alert-danger" role="alert" [hidden]="!firstname.errors.minlength">
+          First name field must have more then 1 characters
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="signupLocalFormLastname">Last name</label>
+      <input type="text" id="signupLocalFormLastname" class="form-control"
+             formControlName="lastname">
+      <div *ngIf="lastname.dirty && !lastname.valid">
+        <div class="alert alert-danger" role="alert" [hidden]="!lastname.errors.minlength">
+          Last name field must have more then 1 characters
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="signupLocalFormEmail">Email</label>
+    <input type="email" id="signupLocalFormEmail" class="form-control"
+           formControlName="email">
+    <div *ngIf="email.dirty && !email.valid">
+      <div class="alert alert-danger" role="alert" [hidden]="!email.errors.minlength">
+        Email field must have more then 8 characters
+      </div>
+      <div class="alert alert-danger" role="alert" [hidden]="email.errors.minlength && !email.errors.isEmail">
+        Email is not valid
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="signupLocalFormPassword">Password</label>
+    <input type="password" id="signupLocalFormPassword" class="form-control"
+           formControlName="password">
+    <div *ngIf="password.dirty && !password.valid">
+      <div class="alert alert-danger" role="alert" [hidden]="!password.errors.minlength">
+        Password field must have more then 8 characters
+      </div>
+      <div class="alert alert-danger" role="alert" [hidden]="!password.errors.maxlength">
+        Password field must have no more then 30 characters
+      </div>
+      <div class="alert alert-danger" role="alert" [hidden]="password.errors.minlength && !password.errors.isPassword">
+        Password must meet the following rules:
+        <ul>
+          <li>At least one upper case english letter</li>
+          <li>At least one lower case english letter</li>
+          <li>At least one digit</li>
+          <li>At least one special character</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="signupLocalFormConfirmPassword">Confirm password</label>
+    <input type="password" id="signupLocalFormConfirmPassword" class="form-control"
+           formControlName="confirm">
+    <div *ngIf="confirm.dirty && !confirm.valid">
+      <div class="alert alert-danger" role="alert" [hidden]="confirm.errors.isEqual">
+        Confirm field must be the same as password
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="!signupLocalForm.valid">Signup</button>
+  </div>
+</form>

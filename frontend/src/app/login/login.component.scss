@@ -6,7 +6,7 @@
   &__form {
     @include shadow-2dp();
     width: 100%;
-    max-width: 400px;
+    max-width: 350px;
     margin: 15px;
     padding: 25px;
     background-color: white;
@@ -38,7 +38,7 @@
         background-color: #d14836;
       }
     }
-    hr {
+    hr.or {
       @include position(relative);
       margin: 25px 0;
       &:after {
@@ -51,6 +51,5 @@
         background-color: white;
       }
     }
-
   }
 }

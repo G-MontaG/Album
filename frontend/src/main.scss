@@ -12,6 +12,9 @@
 @import "app/app.component";
 @import "app/landing/landing.component";
 @import "app/login/login.component";
+@import "app/signup/signup.component";
+@import "app/signup/signup-local.component";
+@import "app/signup/signup-external.component";
 
 html, body {
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
