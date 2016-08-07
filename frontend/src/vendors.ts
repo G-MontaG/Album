@@ -16,7 +16,8 @@ import '@angular/router';
 
 import 'rxjs/Rx';
 
-import 'material-design-lite/material.min.js';
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 import 'lodash';
 import 'moment';

@@ -1,5 +1,56 @@
 .login {
   @include sayagata-400px();
   @include position(fixed, $top: 0, $left: 0, $right: 0, $bottom: 0);
+  @include flex-container(flex, $align-items: center, $justify-content: center);
 
+  &__form {
+    @include shadow-2dp();
+    width: 100%;
+    max-width: 400px;
+    margin: 15px;
+    padding: 25px;
+    background-color: white;
+    .login-facebook-btn {
+      color: white;
+      background-color: #3b5998;
+      &:hover, &:focus {
+        &:active, &.active {
+          color: white;
+          background-color: #3b5998;
+        }
+      }
+      &:active, &.active {
+        color: white;
+        background-color: #3b5998;
+      }
+    }
+    .login-google-btn {
+      color: white;
+      background-color: #d14836;
+      &:hover, &:focus {
+        &:active, &.active {
+          color: white;
+          background-color: #d14836;
+        }
+      }
+      &:active, &.active {
+        color: white;
+        background-color: #d14836;
+      }
+    }
+    hr {
+      @include position(relative);
+      margin: 25px 0;
+      &:after {
+        content: "OR";
+        @include position(absolute, $top: 50%, $left: 50%);
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 5px;
+        background-color: white;
+      }
+    }
+
+  }
 }

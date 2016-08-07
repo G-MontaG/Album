@@ -1,4 +1,5 @@
 @import "styles/variables";
+@import "styles/fonts";
 
 @import "styles/ui-toastr/toastr";
 
@@ -11,3 +12,15 @@
 @import "app/app.component";
 @import "app/landing/landing.component";
 @import "app/login/login.component";
+
+html, body {
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+article, p, a, span {
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Merriweather", Georgia, Palatino, serif;
+}

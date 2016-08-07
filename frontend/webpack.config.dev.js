@@ -28,7 +28,8 @@ module.exports = {
       '@angular/http',
       '@angular/router',
       'rxjs/Rx',
-      'material-design-lite/material.min.js',
+      'jquery',
+      'bootstrap/dist/js/bootstrap.min.js',
       'lodash',
       'moment',
       'accounting',
@@ -118,5 +119,4 @@ module.exports = {
       defaults: [autoprefixer({browsers: ['last 2 versions']})]
     };
   }
-}
-;
+};
