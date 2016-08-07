@@ -14,6 +14,8 @@ interface SessionForAuth extends Session {
   resetPasswordAttemptsExp?:Moment,
   verifyTokenAttempts?:number,
   verifyTokenAttemptsExp?:Moment,
+  forgotTokenAttempts?:number,
+  forgotTokenAttemptsExp?:Moment,
   facebookUserData:any,
   googleUserData:any
 }

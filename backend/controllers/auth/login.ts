@@ -7,7 +7,7 @@ const User = require('../../model/user');
 import {ServerMessage} from '../../helpers/serverMessage';
 import {RequestWithAuthSession} from "./requestSession";
 
-export function loginHandler(req:RequestWithAuthSession, res:express.Response, next:express.NextFunction) {
+export function loginHandler(req:RequestWithAuthSession, res:express.Response) {
   req.checkBody('data.email', 'Email is not valid').isEmail();
   req.checkBody('data.password', 'Password cannot be blank').notEmpty();
   req.checkBody('data.password', `Password length must be from ${cs.passwordMinLength} to ${cs.passwordMaxLength}`)

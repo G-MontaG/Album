@@ -10,16 +10,16 @@ import {RequestWithAuthSession, AuthData} from "./requestSession";
 
 const getFacebookCodeUrl = `https://www.facebook.com/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&scope=public_profile%2Cemail&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Ffacebook-auth%2Fresponse&response_type=code`;
 
-export function facebookCodeHandler(req: express.Request, res: express.Response, next:express.NextFunction) {
+export function facebookCodeHandler(req: express.Request, res: express.Response) {
   res.send({redirectUrl: getFacebookCodeUrl});
 }
 
-export function facebookTokenHandler(req:RequestWithAuthSession, res: express.Response, next: express.NextFunction) {
+export function facebookTokenHandler(req:RequestWithAuthSession, res: express.Response) {
   if (req.query.error) {
-    ServerMessage.error(next, 401, 'Facebook authentication error');
+    ServerMessage.error(res, 401, 'Facebook authentication error');
     console.error('Facebook authentication error');
   } else if (!req.query.code) {
-    ServerMessage.error(next, 401, 'Facebook authentication error. Can not get code');
+    ServerMessage.error(res, 401, 'Facebook authentication error. Can not get code');
     console.error('Facebook authentication error. Can not get code');
   } else {
     new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ export function facebookTokenHandler(req:RequestWithAuthSession, res: express.Re
         });
       });
       tokenReq.on('error', (err) => {
-        ServerMessage.error(next, 401, 'Facebook authentication error. Can not get token');
+        ServerMessage.error(res, 401, 'Facebook authentication error. Can not get token');
         reject(err);
       });
     }).then((authData: AuthData) => {
@@ -50,7 +50,7 @@ export function facebookTokenHandler(req:RequestWithAuthSession, res: express.Re
           });
         });
         userDataReq.on('error', (err) => {
-          ServerMessage.error(next, 401, 'Facebook authentication error. Can not get user info');
+          ServerMessage.error(res, 401, 'Facebook authentication error. Can not get user info');
           reject(err);
         });
       }).catch((err) => {
@@ -62,11 +62,11 @@ export function facebookTokenHandler(req:RequestWithAuthSession, res: express.Re
   }
 }
 
-export function facebookUserHandler(req:RequestWithAuthSession, res: express.Response, next: express.NextFunction) {
+export function facebookUserHandler(req:RequestWithAuthSession, res: express.Response) {
   new Promise((resolve, reject) => {
     User.findOne({email: req.session.facebookUserData.email}, (err, user) => {
       if (err) {
-        ServerMessage.error(next, 500, 'Mongo database error');
+        ServerMessage.error(res, 500, 'Mongo database error');
         reject(err);
       }
       if (!user) {
@@ -92,7 +92,7 @@ export function facebookUserHandler(req:RequestWithAuthSession, res: express.Res
         newUser.cryptPassword().then(() => {
           newUser.save((err, user) => {
             if (err) {
-              ServerMessage.error(next, 500, 'Mongo database error');
+              ServerMessage.error(res, 500, 'Mongo database error');
               reject(err);
             }
             let mailOptions = {
@@ -111,7 +111,7 @@ export function facebookUserHandler(req:RequestWithAuthSession, res: express.Res
             delete _data.password;
             cs.transporter.sendMail(mailOptions, function (err) {
               if (err) {
-                ServerMessage.error(next, 500, 'Send email error');
+                ServerMessage.error(res, 500, 'Send email error');
                 reject(err);
               }
               return user;
@@ -139,7 +139,7 @@ export function facebookUserHandler(req:RequestWithAuthSession, res: express.Res
         user.save((err, user) => {
           delete req.session.facebookUserData;
           if (err) {
-            ServerMessage.error(next, 500, 'Mongo database error');
+            ServerMessage.error(res, 500, 'Mongo database error');
             reject(err);
           }
           // if you keep in token sensitive info encrypt it before use jwt.sign()

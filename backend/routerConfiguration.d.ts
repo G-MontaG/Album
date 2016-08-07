@@ -8,7 +8,7 @@ interface RouterConfiguration {
 }
 
 interface handlerFunction {
-  (req:express.Request, res:express.Response, next?:express.NextFunction);
+  (req:express.Request, res:express.Response);
 }
 
 interface middlewareFunction {

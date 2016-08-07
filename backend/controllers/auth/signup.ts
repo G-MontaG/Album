@@ -6,7 +6,7 @@ import * as cs from './constants';
 const User = require('../../model/user');
 import {ServerMessage} from '../../helpers/serverMessage';
 
-export function signupLocalHandler(req:express.Request, res:express.Response, next:express.NextFunction) {
+export function signupLocalHandler(req:express.Request, res:express.Response) {
   req.checkBody('data.profile.firstname', 'Firstname cannot be blank').notEmpty();
   req.checkBody('data.profile.lastname', 'Lastname cannot be blank').notEmpty();
   req.checkBody('data.email', 'Email is not valid').isEmail();
@@ -16,17 +16,17 @@ export function signupLocalHandler(req:express.Request, res:express.Response, ne
 
   let errors = req.validationErrors();
   if (errors) {
-    ServerMessage.error(next, 401, errors[0].msg);
+    ServerMessage.error(res, 401, errors[0].msg);
   } else {
     let _data = req.body.data;
     new Promise((resolve, reject) => {
       User.findOne({email: _data.email}, (err, user) => {
         if (err) {
-          ServerMessage.error(next, 500, 'Mongo database error');
+          ServerMessage.error(res, 500, 'Mongo database error');
           reject(err);
         }
         if (user) {
-          ServerMessage.error(next, 401, 'Email is already in use');
+          ServerMessage.error(res, 401, 'Email is already in use');
           reject();
         } else {
           let newUser = new User(_data);
@@ -36,7 +36,7 @@ export function signupLocalHandler(req:express.Request, res:express.Response, ne
           newUser.cryptPassword().then(() => {
             newUser.save((err, user) => {
               if (err) {
-                ServerMessage.error(next, 500, 'Mongo database error');
+                ServerMessage.error(res, 500, 'Mongo database error');
                 reject();
               }
               let mailOptions = {
@@ -49,7 +49,7 @@ export function signupLocalHandler(req:express.Request, res:express.Response, ne
               };
               cs.transporter.sendMail(mailOptions, function (err) {
                 if (err) {
-                  ServerMessage.error(next, 500, 'Send email error');
+                  ServerMessage.error(res, 500, 'Send email error');
                   reject();
                 }
                 resolve();
