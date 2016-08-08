@@ -15,28 +15,26 @@ export class SignupService {
     let body = JSON.stringify({data});
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    return this.http.post('/api/signup-local', body, options)
+    return this.http.post('/auth/signup', body, options)
       .map(res => res.json())
       .do((data) => localStorage.setItem("token", data.token))
       .catch(this.handleError);
   }
 
   getGoogle():Observable<getGoogle> {
-    return this.http.get('/api/google-auth')
+    return this.http.get('/auth/google-auth')
       .map(res => res.json())
       .catch(this.handleError);
   }
 
   getFacebook():Observable<getFacebook> {
-    return this.http.get('/api/facebook-auth')
+    return this.http.get('/auth/facebook-auth')
       .map(res => res.json())
       .catch(this.handleError);
   }
 
   private handleError(error:Response) {
-    let _error = error.json();
-    console.error(_error);
-    toastr.error(_error.message);
-    return Observable.throw(_error.error || 'Server error');
+    console.error(error);
+    return Observable.throw(error || 'Server error');
   }
 }

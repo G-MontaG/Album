@@ -16,7 +16,7 @@ export class ResetService {
       'Authorization': 'Bearer ' + jwt
     });
     let options = new RequestOptions({headers: headers});
-    return this.http.post('/api/reset-password', body, options)
+    return this.http.post('/auth/reset-password', body, options)
       .map(res => res.json())
       .do((data) => console.log(data))
       .catch(this.handleError);

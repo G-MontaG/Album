@@ -9,7 +9,7 @@ export class GoogleService {
   }
 
   getGoogleUser() {
-    return this.http.get('/api/google-auth/user')
+    return this.http.get('/auth/google-auth/user')
       .map(res => res.json())
       .do((data) => localStorage.setItem('token', data.token))
       .catch(this.handleError);

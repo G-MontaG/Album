@@ -9,7 +9,7 @@ export class FacebookService {
   }
 
   getFacebookUser() {
-    return this.http.get('/api/facebook-auth/user')
+    return this.http.get('/auth/facebook-auth/user')
       .map(res => res.json())
       .do((data) => localStorage.setItem('token', data.token))
       .catch(this.handleError);
