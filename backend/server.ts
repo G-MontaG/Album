@@ -20,6 +20,7 @@ dotenv.config({path: '.env'});
 import './db';
 
 import {authRouter} from './controllers/auth';
+import {apiRouter} from './controllers/api';
 
 import {ServerMessage} from './helpers/serverMessage';
 
@@ -80,6 +81,7 @@ class Server {
 
   configureRoutes() {
     this.addNamespace('/auth', authRouter);
+    this.addNamespace('/api', apiRouter);
   }
 
   configureErrorHandlers() {

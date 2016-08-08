@@ -17,7 +17,7 @@ export class GoogleComponent implements OnInit {
 
   ngOnInit() {
     this._googleService.getGoogleUser().subscribe(
-      data => this._router.navigate(['Dashboard'])
+      data => this._router.navigate(['/dashboard'])
     );
   }
 }

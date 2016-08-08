@@ -49,6 +49,6 @@
   },
   "scripts": {
     "postinstall": "typings i --save",
-    "server": "nodemon --delay 10 --ext js  server.js"
+    "server": "nodemon --delay 2 --ext js  server.js"
   }
 }

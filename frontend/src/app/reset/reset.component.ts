@@ -54,7 +54,7 @@ export class ResetComponent implements OnInit {
   resetPasswordSubmit() {
     delete this.resetPasswordForm.value.confirm;
     this._reset.postResetPassword(this.resetPasswordForm.value).subscribe(
-      data => this._router.navigate(['Dashboard'])
+      data => this._router.navigate(['/dashboard'])
     );
   }
 }

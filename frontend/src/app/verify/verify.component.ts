@@ -33,7 +33,7 @@ export class VerifyComponent implements OnInit {
   
   verifyEmailSubmit() {
     this._verify.postToken(this.verifyEmailForm.value).subscribe(
-      data => this._router.navigate(['Dashboard'])
+      data => this._router.navigate(['/dashboard'])
     )
   }
 }

@@ -65,14 +65,10 @@ export class SignupLocalComponent implements OnInit {
 
   }
 
-  toSignupExternal() {
-    this._router.navigate(['SignupExternal']);
-  }
-
   signupLocalSubmit() {
     delete this.signupLocalForm.value.confirm;
     this._signupService.postSignupLocal(this.signupLocalForm.value).subscribe(
-      data => this._router.navigateByUrl('/dashboard')
+      data => this._router.navigate(['/dashboard'])
     );
   }
 }
