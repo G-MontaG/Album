@@ -62,8 +62,9 @@ class Server {
 
     this.configureRoutes();
 
-    this.app.get('/*', function (req:express.Request, res:express.Response, next:express.NextFunction) {
-      res.sendfile("index.html", {root: path.join(__dirname, '../frontend/public')});
+    this.app.get(new RegExp(`^\/(login|signup|signup\/local|google-auth\/response|facebook-auth\/response|
+    verify|forgot|reset|dashboard)\/?$`), function (req:express.Request, res:express.Response) {
+      res.sendFile("index.html", {root: path.join(__dirname, '../frontend/public')});
     });
 
     this.configureErrorHandlers();
