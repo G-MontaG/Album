@@ -33,8 +33,9 @@ export class SignupService {
       .catch(this.handleError);
   }
 
-  private handleError(error:Response) {
+  private handleError(error:any) {
     console.error(error);
+    toastr.error(error.message);
     return Observable.throw(error || 'Server error');
   }
 }

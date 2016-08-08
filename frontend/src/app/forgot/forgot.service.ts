@@ -41,10 +41,9 @@ export class ForgotService {
       .catch(this.handleError);
   }
 
-  private handleError(error:Response) {
-    let _error = error.json();
-    console.error(_error);
-    toastr.error(_error.message);
-    return Observable.throw(_error.error || 'Server error');
+  private handleError(error:any) {
+    console.error(error);
+    toastr.error(error.message);
+    return Observable.throw(error || 'Server error');
   }
 }
