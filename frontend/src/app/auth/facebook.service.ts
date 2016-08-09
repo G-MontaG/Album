@@ -1,23 +1,19 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import * as toastr from 'toastr';
+
+import {ErrorHandlerService} from '../shared/errorHandler.service';
 
 @Injectable()
 export class FacebookService {
-  constructor(private http:Http) {
+  constructor(private http:Http,
+              private _errorService:ErrorHandlerService) {
   }
 
   getFacebookUser() {
     return this.http.get('/auth/facebook-auth/user')
       .map(res => res.json())
       .do((data) => localStorage.setItem('token', data.token))
-      .catch(this.handleError);
-  }
-
-  private handleError(error:any) {
-    console.error(error);
-    toastr.error(error.message);
-    return Observable.throw(error || 'Server error');
+      .catch(this._errorService.handleError);
   }
 }

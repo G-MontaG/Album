@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import * as toastr from 'toastr';
+
+import {ErrorHandlerService} from '../shared/errorHandler.service';
 
 @Injectable()
 export class ForgotService {
-  constructor(private http:Http) {
+  constructor(private http:Http,
+              private _errorService:ErrorHandlerService) {
   }
 
   postEmail(data:{email: string}) {
@@ -14,7 +16,7 @@ export class ForgotService {
     let options = new RequestOptions({headers: headers});
     return this.http.post('/auth/forgot-password/email', body, options)
       .map(res => res.json())
-      .catch(this.handleError);
+      .catch(this._errorService.handleError);
   }
 
   postToken(data:{token: string}) {
@@ -24,7 +26,7 @@ export class ForgotService {
     return this.http.post('/auth/forgot-password/token', body, options)
       .map(res => res.json())
       .do((data) => localStorage.setItem("token", data.token))
-      .catch(this.handleError);
+      .catch(this._errorService.handleError);
   }
 
   postPassword(data:{password: string}) {
@@ -38,12 +40,6 @@ export class ForgotService {
     return this.http.post('/auth/forgot-password/new-password', body, options)
       .map(res => res.json())
       .do((data) => console.log(data))
-      .catch(this.handleError);
-  }
-
-  private handleError(error:any) {
-    console.error(error);
-    toastr.error(error.message);
-    return Observable.throw(error || 'Server error');
+      .catch(this._errorService.handleError);
   }
 }

@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import * as toastr from 'toastr';
 
 import {postLogin, getGoogle, getFacebook} from "./login.model";
+import {ErrorHandlerService} from '../shared/errorHandler.service';
 
 @Injectable()
 export class LoginService {
-  constructor(private http:Http) {
+  constructor(private http:Http,
+              private _errorService:ErrorHandlerService) {
   }
 
   postLogin(data:postLogin) {
@@ -18,24 +19,18 @@ export class LoginService {
       .map(res => res.json())
       .do((data) => console.log(data))
       .do((data) => localStorage.setItem("token", data.token))
-      .catch(this.handleError);
+      .catch(this._errorService.handleError);
   }
 
   getGoogle():Observable<getGoogle> {
     return this.http.get('/auth/google-auth')
       .map(res => res.json())
-      .catch(this.handleError);
+      .catch(this._errorService.handleError);
   }
 
   getFacebook():Observable<getFacebook> {
     return this.http.get('/auth/facebook-auth')
       .map(res => res.json())
-      .catch(this.handleError);
-  }
-
-  private handleError(error:any) {
-    console.error(error);
-    toastr.error(error.message);
-    return Observable.throw(error || 'Server error');
+      .catch(this._errorService.handleError);
   }
 }
