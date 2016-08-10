@@ -15,7 +15,7 @@ export function loginHandler(req:RequestWithAuthSession, res:express.Response) {
 
   let errors = req.validationErrors();
   if (errors) {
-    ServerMessage.error(res, 401, errors[0].msg);
+    ServerMessage.error(req, res, 401, errors[0].msg);
   } else {
     if (!req.session.loginPasswordAttempts || !req.session.loginPasswordAttemptsExp) {
       req.session.loginPasswordAttempts = 1;
@@ -26,23 +26,23 @@ export function loginHandler(req:RequestWithAuthSession, res:express.Response) {
       req.session.loginPasswordAttemptsExp = moment().add(cs.expTimeAttempts, 'hours');
     }
     if (req.session.loginPasswordAttempts > 10) {
-      ServerMessage.error(res, 401, 'You have exceeded the number of attempts');
+      ServerMessage.error(req, res, 401, 'You have exceeded the number of attempts');
     } else {
       req.session.loginPasswordAttempts++;
       let _data = req.body.data;
       new Promise((resolve, reject) => {
         User.findOne({email: _data.email}, (err, user) => {
           if (err) {
-            ServerMessage.error(res, 500, 'Mongo database error');
+            ServerMessage.error(req, res, 500, 'Mongo database error');
             reject();
           }
           if (!user) {
-            ServerMessage.error(res, 401, 'Email not found');
+            ServerMessage.error(req, res, 401, 'Email not found');
             reject();
           } else {
             user.checkPassword(_data.password).then((result) => {
               if (!result) {
-                ServerMessage.error(res, 401, "Password didn't match");
+                ServerMessage.error(req, res, 401, "Password didn't match");
                 reject();
               } else {
                 delete _data.email;

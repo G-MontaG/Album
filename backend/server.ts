@@ -88,7 +88,7 @@ class Server {
       if (req.accepts('html')) {
         res.sendFile('error.html', {root: rootDir});
       } else if (req.accepts('json')) {
-        ServerMessage.error(res, 404, 'Page not found');
+        ServerMessage.error(req, res, 404, 'Page not found');
       }
     });
   }

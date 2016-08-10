@@ -16,10 +16,10 @@ export function googleCodeHandler(req: express.Request, res: express.Response) {
 
 export function googleTokenHandler(req: RequestWithAuthSession, res: express.Response) {
   if (req.query.error) {
-    ServerMessage.error(res, 401, 'Google authentication error');
+    ServerMessage.error(req, res, 401, 'Google authentication error');
     console.error('Google authentication error');
   } else if (!req.query.code) {
-    ServerMessage.error(res, 401, 'Google authentication error. Can not get code');
+    ServerMessage.error(req, res, 401, 'Google authentication error. Can not get code');
     console.error('Google authentication error. Can not get code');
   } else {
     new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ export function googleTokenHandler(req: RequestWithAuthSession, res: express.Res
         });
       });
       tokenReq.on('error', (err) => {
-        ServerMessage.error(res, 401, 'Google authentication error. Can not get token');
+        ServerMessage.error(req, res, 401, 'Google authentication error. Can not get token');
         reject(err);
       });
       tokenReq.write(`code=${req.query.code}&client_id=${process.env.GOOGLE_ID}&client_secret=${process.env.GOOGLE_KEY}&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Fgoogle-auth%2Fresponse&grant_type=authorization_code`);
@@ -59,7 +59,7 @@ export function googleTokenHandler(req: RequestWithAuthSession, res: express.Res
           });
         });
         userDataReq.on('error', (err) => {
-          ServerMessage.error(res, 401, 'Google authentication error. Can not get user info');
+          ServerMessage.error(req, res, 401, 'Google authentication error. Can not get user info');
           reject(err);
         });
       }).catch((err) => {
@@ -75,7 +75,7 @@ export function googleUserHandler(req:RequestWithAuthSession, res:express.Respon
   new Promise((resolve, reject) => {
     User.findOne({email: req.session.googleUserData.email}, (err, user) => {
       if (err) {
-        ServerMessage.error(res, 500, 'Mongo database error');
+        ServerMessage.error(req, res, 500, 'Mongo database error');
         reject(err);
       }
       if (!user) {
@@ -101,7 +101,7 @@ export function googleUserHandler(req:RequestWithAuthSession, res:express.Respon
         newUser.cryptPassword().then(() => {
           newUser.save((err, user) => {
             if (err) {
-              ServerMessage.error(res, 500, 'Mongo database error');
+              ServerMessage.error(req, res, 500, 'Mongo database error');
               reject(err);
             }
             let mailOptions = {
@@ -120,7 +120,7 @@ export function googleUserHandler(req:RequestWithAuthSession, res:express.Respon
             delete _data.password;
             cs.transporter.sendMail(mailOptions, function (err) {
               if (err) {
-                ServerMessage.error(res, 500, 'Send email error');
+                ServerMessage.error(req, res, 500, 'Send email error');
                 reject(err);
               }
               return user;
@@ -148,7 +148,7 @@ export function googleUserHandler(req:RequestWithAuthSession, res:express.Respon
         user.save((err, user) => {
           delete req.session.googleUserData;
           if (err) {
-            ServerMessage.error(res, 500, 'Mongo database error');
+            ServerMessage.error(req, res, 500, 'Mongo database error');
             reject(err);
           }
           // if you keep in token sensitive info encrypt it before use jwt.sign()

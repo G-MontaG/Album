@@ -1,11 +1,12 @@
 import express = require('express');
+import winston = require('winston');
 
 export class ServerMessage {
   constructor() {
 
   }
 
-  static error(res: express.Response, status: number, message: string) {
+  public static error(req: any, res: express.Response, status: number, message: string) {
     let _status = status || 500;
     let _message = message || '';
     let err = {
@@ -14,9 +15,10 @@ export class ServerMessage {
       error: new Error(_message)
     };
     res.send(err);
+    winston.log('error', `${req.method} ${req.path} [${err.status}] - ${err.message}`);
   };
 
-  static message(res: express.Response, status: number, data: any) {
+  public static message(res: express.Response, status: number, data: any) {
     let _status = status || 200;
     let _data = data || {};
     let _message = _data.message || '';
@@ -33,7 +35,7 @@ export class ServerMessage {
     });
   };
 
-  static data(res: express.Response, status: number, data: any) {
+  public static data(res: express.Response, status: number, data: any) {
     let _status = status || 200;
     let _data = data || {};
     res.status(_status);

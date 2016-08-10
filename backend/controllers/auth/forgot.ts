@@ -13,23 +13,23 @@ export function forgotPasswordEmailHandler(req: express.Request, res: express.Re
 
   let errors = req.validationErrors();
   if (errors) {
-    ServerMessage.error(res, 401, errors[0].msg);
+    ServerMessage.error(req, res, 401, errors[0].msg);
   } else {
     let _data = req.body.data;
     new Promise((resolve, reject) => {
       User.findOne({email: _data.email}, (err, user) => {
         if (err) {
-          ServerMessage.error(res, 500, 'Mongo database error');
+          ServerMessage.error(req, res, 500, 'Mongo database error');
           reject(err);
         }
         if (!user) {
-          ServerMessage.error(res, 401, 'Email not found');
+          ServerMessage.error(req, res, 401, 'Email not found');
           reject();
         } else {
           cs.generateEmailToken(user, 'forgot');
           user.save((err) => {
             if (err) {
-              ServerMessage.error(res, 500, 'Mongo database error');
+              ServerMessage.error(req, res, 500, 'Mongo database error');
               reject(err);
             }
             let mailOptions = {
@@ -42,7 +42,7 @@ export function forgotPasswordEmailHandler(req: express.Request, res: express.Re
             };
             cs.transporter.sendMail(mailOptions, function (err) {
               if (err) {
-                ServerMessage.error(res, 500, 'Send email error');
+                ServerMessage.error(req, res, 500, 'Send email error');
                 reject(err);
               }
               ServerMessage.message(res, 200, {message: 'Token has been sent', flag: true});
@@ -65,7 +65,7 @@ export function forgotPasswordTokenHandler(req: RequestWithAuthSession, res: exp
 
   let errors = req.validationErrors();
   if (errors) {
-    ServerMessage.error(res, 401, errors[0].msg);
+    ServerMessage.error(req, res, 401, errors[0].msg);
   } else {
     if (!req.session.forgotTokenAttempts || !req.session.forgotTokenAttemptsExp) {
       req.session.forgotTokenAttempts = 1;
@@ -76,27 +76,27 @@ export function forgotPasswordTokenHandler(req: RequestWithAuthSession, res: exp
       req.session.forgotTokenAttemptsExp = moment().add(cs.expTimeAttempts, 'hours');
     }
     if (req.session.forgotTokenAttempts > 3) {
-      ServerMessage.error(res, 401, 'You have exceeded the number of attempts');
+      ServerMessage.error(req, res, 401, 'You have exceeded the number of attempts');
     } else {
       req.session.forgotTokenAttempts++;
       let _data = req.body.data;
       new Promise((resolve, reject) => {
         User.findOne({'forgotPasswordToken.value': _data.token}, (err, user) => {
           if (err) {
-            ServerMessage.error(res, 500, 'Mongo database error');
+            ServerMessage.error(req, res, 500, 'Mongo database error');
             reject(err);
           }
           if (!user) {
-            ServerMessage.error(res, 401, 'Token not found');
+            ServerMessage.error(req, res, 401, 'Token not found');
             reject();
           } else if (moment() > user.forgotPasswordToken.exp) {
-            ServerMessage.error(res, 401, 'Token has expired');
+            ServerMessage.error(req, res, 401, 'Token has expired');
             reject();
           } else {
             user.forgotPasswordToken = undefined;
             user.save((err) => {
               if (err) {
-                ServerMessage.error(res, 500, 'Mongo database error');
+                ServerMessage.error(req, res, 500, 'Mongo database error');
                 reject(err);
               }
               let _token = jwt.sign({
@@ -126,17 +126,17 @@ export function forgotPasswordNewPasswordHandler(req: RequestWithAuthSession, re
 
   let errors = req.validationErrors();
   if (errors) {
-    ServerMessage.error(res, 401, errors[0].msg);
+    ServerMessage.error(req, res, 401, errors[0].msg);
   } else {
     let _data = req.body.data;
     new Promise((resolve, reject) => {
       User.findOne({_id: req.userId}, (err, user) => {
         if (err) {
-          ServerMessage.error(res, 500, 'Mongo database error');
+          ServerMessage.error(req, res, 500, 'Mongo database error');
           reject(err);
         }
         if (!user) {
-          ServerMessage.error(res, 401, 'User not found');
+          ServerMessage.error(req, res, 401, 'User not found');
           reject();
         } else {
           user.password = _data.password;
@@ -144,7 +144,7 @@ export function forgotPasswordNewPasswordHandler(req: RequestWithAuthSession, re
           user.cryptPassword().then(() => {
             user.save((err) => {
               if (err) {
-                ServerMessage.error(res, 500, 'Mongo database error');
+                ServerMessage.error(req, res, 500, 'Mongo database error');
                 reject(err);
               }
               ServerMessage.message(res, 200, {message: 'Password has been changed', flag: true});

@@ -5,9 +5,8 @@
     "instances": "max",
     "exec_mode": "cluster",
     "error_file": "err.log",
-    "out_file": "out.log",
     "merge_logs": true,
-    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "log_date_format": "DD-MM-YYYY HH:mm",
     "env_production" : {
       "NODE_ENV": "development"
     },
