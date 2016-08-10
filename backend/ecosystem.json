@@ -1,0 +1,20 @@
+{
+  "apps": [{
+    "name": "album server",
+    "script": "server.js",
+    "instances": "max",
+    "exec_mode": "cluster",
+    "error_file": "err.log",
+    "out_file": "out.log",
+    "merge_logs": true,
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "env_production" : {
+      "NODE_ENV": "development"
+    },
+    "watch": ["**/*js"],
+    "ignore_watch" : ["node_modules", "typings", "uploads"],
+    "watch_options": {
+      "followSymlinks": false
+    }
+  }]
+}
