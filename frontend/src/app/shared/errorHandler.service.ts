@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs/Rx";
+import * as toastr from 'toastr';
 
 @Injectable()
 export class ErrorHandlerService {
@@ -7,8 +8,9 @@ export class ErrorHandlerService {
   }
 
   public handleError(error: any):Observable<{}> {
-    console.error(error);
-    toastr.error(error.message);
-    return Observable.throw(error || 'Server error');
+    let _error = error.json();
+    console.error(_error);
+    toastr.error(_error.message);
+    return Observable.throw(_error || error || 'Server error');
   }
 }

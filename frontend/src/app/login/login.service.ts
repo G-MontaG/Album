@@ -17,7 +17,6 @@ export class LoginService {
     let options = new RequestOptions({headers: headers});
     return this.http.post('/auth/login', body, options)
       .map(res => res.json())
-      .do((data) => console.log(data))
       .do((data) => localStorage.setItem("token", data.token))
       .catch(this._errorService.handleError);
   }

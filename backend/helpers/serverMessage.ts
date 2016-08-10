@@ -14,6 +14,8 @@ export class ServerMessage {
       message: _message,
       error: new Error(_message)
     };
+
+    res.status(_status);
     res.send(err);
     winston.log('error', `${req.method} ${req.path} [${err.status}] - ${err.message}`);
   };
