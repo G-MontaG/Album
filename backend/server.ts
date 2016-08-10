@@ -7,7 +7,6 @@ import express = require('express');
 import cookieParser = require('cookie-parser');
 import compress = require('compression');
 import bodyParser = require('body-parser');
-import logger = require('morgan');
 //import lusca = require('lusca');
 import dotenv = require('dotenv');
 import session = require('express-session');
@@ -32,7 +31,6 @@ class Server {
     this.app.set('port', process.env.SERVER_PORT || 3000);
 
     this.app.use(compress(6));
-    this.app.use(logger('dev'));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({extended: true}));
     this.app.use(expressValidator());
