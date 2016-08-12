@@ -4,6 +4,7 @@ import jwt = require('jsonwebtoken');
 
 import * as cs from './constants';
 const User = require('../../model/user');
+import {UserType} from '../../model/user';
 import {ServerMessage} from '../../helpers/serverMessage';
 
 export function signupLocalHandler(req: express.Request, res: express.Response) {
