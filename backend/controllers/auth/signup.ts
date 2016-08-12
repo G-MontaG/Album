@@ -64,6 +64,9 @@ export function signupLocalHandler(req: express.Request, res: express.Response) 
             jwtid: process.env.JWT_ID
           });
           ServerMessage.message(res, 200, {message: 'User is authorized', token: _token});
+        }).catch((err) => {
+          ServerMessage.error(req, res, 500, 'Mongo database save user error');
+          return err;
         });
       }
     }).catch((err) => {

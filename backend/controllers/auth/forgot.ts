@@ -22,6 +22,7 @@ export function forgotPasswordEmailHandler(req: express.Request, res: express.Re
           ServerMessage.error(req, res, 500, 'Mongo database error');
           reject(err);
         }
+
         if (!user) {
           ServerMessage.error(req, res, 401, 'Email not found');
           reject();
