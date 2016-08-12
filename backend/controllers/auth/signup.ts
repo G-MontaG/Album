@@ -20,58 +20,50 @@ export function signupLocalHandler(req: express.Request, res: express.Response) 
   }
   else {
     let _data = req.body.data;
+    let newUser = new User(_data);
     User.findOne({email: _data.email}).exec().then((user) => {
       if (user) {
-        ServerMessage.error(req, res, 401, 'Email is already in use');
-        return null;
+        let err: ServerError = new Error("Email is already in use");
+        err.status = 401;
+        throw err;
       } else {
-        let newUser = new User(_data);
         delete _data.email;
         delete _data.password;
         cs.generateEmailToken(newUser, 'verify');
-        newUser.cryptPassword().then(() => {
-          newUser.save((err, user) => {
-            if (err) {
-              ServerMessage.error(req, res, 500, 'Mongo database save user error');
-              return err;
-            }
-            let mailOptions = {
-              to: user.email,
-              from: 'arthur.osipenko@gmail.com',
-              subject: 'Hello on XXX',
-              text: `Hello. This is a token for your account 
+        return newUser.cryptPassword();
+      }
+    }).then(() => {
+      return newUser.save().exec();
+    }).then((user) => {
+      let mailOptions = {
+        to: user.email,
+        from: 'arthur.osipenko@gmail.com',
+        subject: 'Hello on XXX',
+        text: `Hello. This is a token for your account 
                 ${user.emailVerifyToken.value.slice(0, cs.emailTokenLength / 2)} ${user.emailVerifyToken.value.slice(cs.emailTokenLength / 2, cs.emailTokenLength)}
                 Please go back and enter it in your profile to verify your email.`
-            };
-            cs.transporter.sendMail(mailOptions, function (err) {
-              if (err) {
-                ServerMessage.error(req, res, 500, 'Send email error');
-                return err;
-              }
-            });
-          });
-          return newUser;
-        }).then((user) => {
-          console.log("fghfgh");
-          console.log(user);
-          // if you keep in token sensitive info encrypt it before use jwt.sign()
-          let _token = jwt.sign({
-            id: user._id,
-            'user-agent': req.headers['user-agent']
-          }, process.env.JWT_SECRET, {
-            algorithm: cs.tokenAlg,
-            expiresIn: `${cs.tokenExp}d`,
-            jwtid: process.env.JWT_ID
-          });
-          ServerMessage.message(res, 200, {message: 'User is authorized', token: _token});
-        }).catch((err) => {
-          ServerMessage.error(req, res, 500, 'Mongo database save user error');
-          return err;
-        });
-      }
+      };
+      cs.transporter.sendMail(mailOptions, function (err) {
+        if (err) {
+          let err: ServerError = new Error("Send email error");
+          err.status = 500;
+          throw err;
+        }
+      });
+    }).then(() => {
+      // if you keep in token sensitive info encrypt it before use jwt.sign()
+      let _token = jwt.sign({
+        id: newUser._id,
+        'user-agent': req.headers['user-agent']
+      }, process.env.JWT_SECRET, {
+        algorithm: cs.tokenAlg,
+        expiresIn: `${cs.tokenExp}d`,
+        jwtid: process.env.JWT_ID
+      });
+      ServerMessage.message(res, 200, {message: 'User is authorized', token: _token});
     }).catch((err) => {
-        ServerMessage.error(req, res, 500, 'Mongo database find user error');
-        return err;
+      ServerMessage.error(req, res, err.status || 500, err.message || 'Mongo database save user error');
+      return err;
     });
   }
 }
