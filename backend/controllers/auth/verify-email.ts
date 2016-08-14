@@ -41,7 +41,7 @@ export function verifyEmailTokenHandler(req: RequestWithAuthSession, res: expres
         } else {
           user.emailVerifyToken = undefined;
           user.emailConfirmed = true;
-          return user.save().exec();
+          return user.save();
         }
       }).then(() => {
         ServerMessage.message(res, 200, {message: 'Email is confirmed', flag: true});

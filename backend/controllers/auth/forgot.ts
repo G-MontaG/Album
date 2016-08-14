@@ -26,7 +26,7 @@ export function forgotPasswordEmailHandler(req: express.Request, res: express.Re
       } else {
         cs.generateEmailToken(user, 'forgot');
         currentUser = user;
-        return currentUser.save().exec();
+        return currentUser.save();
       }
     }).then(() => {
       let mailOptions = {
@@ -84,7 +84,7 @@ export function forgotPasswordTokenHandler(req: RequestWithAuthSession, res: exp
           throw err;
         } else {
           delete user.forgotPasswordToken;
-          return user.save().exec();
+          return user.save();
         }
       }).then((user) => {
         let _token = jwt.sign({
@@ -126,7 +126,7 @@ export function forgotPasswordNewPasswordHandler(req: RequestWithAuthSession, re
         return user.cryptPassword();
       }
     }).then(() => {
-      return currentUser.save().exec();
+      return currentUser.save();
     }).then(() => {
       ServerMessage.message(res, 200, {message: 'Password has been changed', flag: true});
     }).catch((err) => {

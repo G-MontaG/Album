@@ -84,7 +84,7 @@ export function facebookUserHandler(req: RequestWithAuthSession, res: express.Re
       _data.password = newUser.createPassword();
       cs.generateEmailToken(newUser, 'verify');
       newUser.cryptPassword().then(() => {
-        return newUser.save().exec();
+        return newUser.save();
       }).then((user) => {
         let mailOptions = {
           to: user.email,
@@ -127,7 +127,7 @@ export function facebookUserHandler(req: RequestWithAuthSession, res: express.Re
       if (user.profile.picture.source === 'facebook') {
         user.picture = req.session.facebookUserData.picture.data.url;
       }
-      user.save().exec().then((user) => {
+      user.save().then((user) => {
         delete req.session.facebookUserData;
         // if you keep in token sensitive info encrypt it before use jwt.sign()
         let _token = jwt.sign({

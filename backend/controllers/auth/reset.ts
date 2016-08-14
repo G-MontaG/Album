@@ -55,7 +55,7 @@ export function resetPasswordHandler(req: RequestWithAuthSession, res: express.R
           return currentUser.cryptPassword();
         }
       }).then(() => {
-        return currentUser.save().exec();
+        return currentUser.save();
       }).then(() => {
         ServerMessage.message(res, 200, {message: 'Password has been changed', flag: true});
       }).catch((err) => {

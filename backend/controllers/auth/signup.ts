@@ -34,7 +34,7 @@ export function signupLocalHandler(req: express.Request, res: express.Response) 
         return newUser.cryptPassword();
       }
     }).then(() => {
-      return newUser.save().exec();
+      return newUser.save();
     }).then((user) => {
       let mailOptions = {
         to: user.email,

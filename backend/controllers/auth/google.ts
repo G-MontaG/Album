@@ -93,7 +93,7 @@ export function googleUserHandler(req: RequestWithAuthSession, res: express.Resp
       _data.password = newUser.createPassword();
       cs.generateEmailToken(newUser, 'verify');
       newUser.cryptPassword().then(() => {
-        return newUser.save().exec();
+        return newUser.save();
       }).then((user) => {
         let mailOptions = {
           to: user.email,
@@ -135,7 +135,7 @@ export function googleUserHandler(req: RequestWithAuthSession, res: express.Resp
       if (user.profile.picture.source === 'google') {
         user.profile.picture.url = req.session.googleUserData.picture;
       }
-      user.save().exec().then((user) => {
+      user.save().then((user) => {
         delete req.session.googleUserData;
         // if you keep in token sensitive info encrypt it before use jwt.sign()
         let _token = jwt.sign({

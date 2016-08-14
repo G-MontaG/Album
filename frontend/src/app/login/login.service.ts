@@ -21,13 +21,13 @@ export class LoginService {
       .catch(this._errorService.handleError);
   }
 
-  getGoogle():Observable<GoogleResponse> {
+  getGoogle():any {
     return this.http.get('/auth/google-auth')
       .map(res => res.json())
       .catch(this._errorService.handleError);
   }
 
-  getFacebook():Observable<FacebookResponse> {
+  getFacebook():any {
     return this.http.get('/auth/facebook-auth')
       .map(res => res.json())
       .catch(this._errorService.handleError);
