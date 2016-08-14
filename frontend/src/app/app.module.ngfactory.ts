@@ -7,6 +7,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {routes} from './app.routes';
 import {FormValidationService} from "./shared/form-validation.service";
+import {ErrorHandlerService} from './shared/errorHandler.service';
 
 import {LandingComponent} from "./landing/landing.component";
 import {LoginComponent} from "./login/login.component";
@@ -38,7 +39,7 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
     RouterModule.forRoot(routes),
     FormsModule,
     ReactiveFormsModule],
-  providers: [FormValidationService],
+  providers: [FormValidationService, ErrorHandlerService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

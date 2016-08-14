@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
-import {postSignupLocalData, getGoogle, getFacebook} from "./signup.model";
+import {postSignupLocalData, GoogleResponse, FacebookResponse} from "./signup.model";
 import {ErrorHandlerService} from '../shared/errorHandler.service';
 
 @Injectable()
@@ -22,13 +22,13 @@ export class SignupService {
       .catch(this._errorService.handleError);
   }
 
-  getGoogle():Observable<getGoogle> {
+  getGoogle():Observable<GoogleResponse> {
     return this.http.get('/auth/google-auth')
       .map(res => res.json())
       .catch(this._errorService.handleError);
   }
 
-  getFacebook():Observable<getFacebook> {
+  getFacebook():Observable<FacebookResponse> {
     return this.http.get('/auth/facebook-auth')
       .map(res => res.json())
       .catch(this._errorService.handleError);

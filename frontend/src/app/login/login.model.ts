@@ -1,12 +1,13 @@
+import {Observable} from "rxjs";
 export interface postLogin {
   email: string,
   password: string
 }
 
-export interface getGoogle {
+export interface GoogleResponse {
   redirectUrl: string
 }
 
-export interface getFacebook {
+export interface FacebookResponse {
   redirectUrl: string
 }
