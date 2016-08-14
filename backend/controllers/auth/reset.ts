@@ -34,7 +34,7 @@ export function resetPasswordHandler(req: RequestWithAuthSession, res: express.R
       req.session.resetPasswordAttempts++;
       let _data = req.body.data;
       let currentUser: UserType;
-      User.findOne({_id: req.userId}).exec().then((err, user) => {
+      User.findOne({_id: req.userId}).exec().then((user) => {
         if (!user) {
           let err: ServerError = new Error("User not found");
           err.status = 401;

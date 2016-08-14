@@ -4,8 +4,10 @@ import {FormControl} from "@angular/forms";
 @Injectable()
 export class FormValidationService {
   private password;
+  private newPassword;
   constructor() {
     this.password = '';
+    this.newPassword = '';
   }
 
   static isEmail(control:FormControl):{[key:string]:boolean} {
@@ -32,8 +34,15 @@ export class FormValidationService {
     return {isNotNumber: false};
   }
 
-  public isEqual(control: FormControl) {
+  public isEqualPass(control: FormControl) {
     if (control.value === this.password.value) {
+      return null;
+    }
+    return {isEqual: false};
+  }
+
+  public isEqualNewPass(control: FormControl) {
+    if (control.value === this.newPassword.value) {
       return null;
     }
     return {isEqual: false};

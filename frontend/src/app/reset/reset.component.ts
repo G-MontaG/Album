@@ -18,13 +18,13 @@ export class ResetComponent implements OnInit {
   newPassword:FormControl;
   confirm:FormControl;
 
-  private isEqual;
+  private isEqualNewPass;
 
   constructor(private _reset:ResetService,
               private _router:Router,
               private _formBuilder:FormBuilder,
               private _validationService:FormValidationService) {
-    this.isEqual = this._validationService.isEqual.bind(this);
+    this.isEqualNewPass = this._validationService.isEqualNewPass.bind(this);
     this.password = new FormControl('', Validators.compose([
       Validators.required,
       Validators.minLength(8),
@@ -39,7 +39,7 @@ export class ResetComponent implements OnInit {
     ]));
     this.confirm = new FormControl('', Validators.compose([
       Validators.required,
-      this.isEqual
+      this.isEqualNewPass
     ]));
     this.resetPasswordForm = _formBuilder.group({
       password: this.password,
