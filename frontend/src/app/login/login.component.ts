@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
-import {REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {Router, ROUTER_DIRECTIVES} from "@angular/router";
+import {FormControl, FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 import {LoginService} from "./login.service";
 import {FormValidationService} from "../shared/form-validation.service";
@@ -9,7 +9,6 @@ import {FormValidationService} from "../shared/form-validation.service";
 @Component({
   selector: 'login',
   template: require('./login.component.html'),
-  directives: [REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES],
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {provideRouter, RouterConfig} from '@angular/router';
+import {Routes} from '@angular/router';
 import {LandingComponent} from './landing/landing.component';
 import {LoginComponent} from './login/login.component';
 import {SignupComponent} from './signup/signup.component';
@@ -11,7 +11,7 @@ import {ForgotComponent} from './forgot/forgot.component';
 import {ResetComponent} from './reset/reset.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 
-const routes:RouterConfig = [
+export const routes:Routes= [
   {path: '', component: LandingComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent, children: [
@@ -24,8 +24,4 @@ const routes:RouterConfig = [
   {path: 'forgot', component: ForgotComponent},
   {path: 'reset', component: ResetComponent},
   {path: 'dashboard', component: DashboardComponent},
-];
-
-export const appRouterProviders = [
-  provideRouter(routes)
 ];
