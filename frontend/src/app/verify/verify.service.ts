@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import * as toastr from 'toastr';
+
+import {ErrorHandlerService} from '../shared/errorHandler.service';
 
 @Injectable()
 export class VerifyService {
-  constructor(private http:Http) {
+  constructor(private http:Http,
+              private _errorService:ErrorHandlerService) {
   }
 
   postToken(data:{token: string}) {
@@ -19,13 +21,6 @@ export class VerifyService {
     return this.http.post('/api/verify-email', body, options)
       .map(res => res.json())
       .do((data) => console.log(data))
-      .catch(this.handleError);
-  }
-
-  private handleError(error:Response) {
-    let _error = error.json();
-    console.error(_error);
-    toastr.error(_error.message);
-    return Observable.throw(_error.error || 'Server error');
+      .catch(this._errorService.handleError);
   }
 }

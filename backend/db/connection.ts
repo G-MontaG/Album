@@ -2,6 +2,7 @@
 
 // connection string format: 'mongodb://username:password@localhost:27017/test';
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 let connectionUrlParts:string[] = [];
 let connectionUrl:string;

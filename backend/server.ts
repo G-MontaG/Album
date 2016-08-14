@@ -7,7 +7,6 @@ import express = require('express');
 import cookieParser = require('cookie-parser');
 import compress = require('compression');
 import bodyParser = require('body-parser');
-import logger = require('morgan');
 //import lusca = require('lusca');
 import dotenv = require('dotenv');
 import session = require('express-session');
@@ -20,6 +19,7 @@ dotenv.config({path: '.env'});
 import './db';
 
 import {authRouter} from './controllers/auth';
+import {apiRouter} from './controllers/api';
 
 import {ServerMessage} from './helpers/serverMessage';
 
@@ -31,7 +31,6 @@ class Server {
     this.app.set('port', process.env.SERVER_PORT || 3000);
 
     this.app.use(compress(6));
-    this.app.use(logger('dev'));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({extended: true}));
     this.app.use(expressValidator());
@@ -62,8 +61,9 @@ class Server {
 
     this.configureRoutes();
 
-    this.app.get('/*', function (req:express.Request, res:express.Response, next:express.NextFunction) {
-      res.sendfile("index.html", {root: path.join(__dirname, '../frontend/public')});
+    this.app.get(new RegExp(`^\/(login|signup|signup\/local|google-auth\/response|facebook-auth\/response|
+    verify|forgot|reset|dashboard)\/?$`), function (req:express.Request, res:express.Response) {
+      res.sendFile("index.html", {root: path.join(__dirname, '../frontend/public')});
     });
 
     this.configureErrorHandlers();
@@ -79,6 +79,7 @@ class Server {
 
   configureRoutes() {
     this.addNamespace('/auth', authRouter);
+    this.addNamespace('/api', apiRouter);
   }
 
   configureErrorHandlers() {
@@ -87,7 +88,7 @@ class Server {
       if (req.accepts('html')) {
         res.sendFile('error.html', {root: rootDir});
       } else if (req.accepts('json')) {
-        ServerMessage.error(res, 404, 'Page not found');
+        ServerMessage.error(req, res, 404, 'Page not found');
       }
     });
   }

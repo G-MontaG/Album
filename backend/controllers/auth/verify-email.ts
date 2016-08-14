@@ -14,7 +14,7 @@ export function verifyEmailTokenHandler(req: RequestWithAuthSession, res: expres
 
   let errors = req.validationErrors();
   if (errors) {
-    ServerMessage.error(res, 401, errors[0].msg);
+    ServerMessage.error(req, res, 401, errors[0].msg);
   } else {
     if (!req.session.verifyTokenAttempts || !req.session.verifyTokenAttemptsExp) {
       req.session.verifyTokenAttempts = 1;
@@ -25,35 +25,29 @@ export function verifyEmailTokenHandler(req: RequestWithAuthSession, res: expres
       req.session.verifyTokenAttemptsExp = moment().add(cs.expTimeAttempts, 'hours');
     }
     if (req.session.verifyTokenAttempts > 3) {
-      ServerMessage.error(res, 401, 'You have exceeded the number of attempts');
+      ServerMessage.error(req, res, 401, 'You have exceeded the number of attempts');
     } else {
       req.session.verifyTokenAttempts++;
       let _data = req.body.data;
-      new Promise((resolve, reject) => {
-        User.findOne({'emailVerifyToken.value': _data.token}, (err, user) => {
-          if (err) {
-            ServerMessage.error(res, 500, 'Mongo database error');
-            reject(err);
-          }
-          if (!user) {
-            reject(ServerMessage.error(res, 401, 'Token not found'));
-          } else if (moment() > user.forgotPasswordToken.exp) {
-            reject(ServerMessage.error(res, 401, 'Token has expired'));
-          } else {
-            user.emailVerifyToken = undefined;
-            user.emailConfirmed = true;
-            user.save((err) => {
-              if (err) {
-                ServerMessage.error(res, 500, 'Mongo database error');
-                reject(err);
-              }
-              ServerMessage.message(res, 200, {message: 'Email is confirmed', flag: true});
-              resolve();
-            });
-          }
-        });
+      User.findOne({'emailVerifyToken.value': _data.token}).exec().then((user) => {
+        if (!user) {
+          let err: ServerError = new Error("Token not found");
+          err.status = 401;
+          throw err;
+        } else if (moment() > user.forgotPasswordToken.exp) {
+          let err: ServerError = new Error("Token has expired");
+          err.status = 401;
+          throw err;
+        } else {
+          user.emailVerifyToken = undefined;
+          user.emailConfirmed = true;
+          return user.save().exec();
+        }
+      }).then(() => {
+        ServerMessage.message(res, 200, {message: 'Email is confirmed', flag: true});
       }).catch((err) => {
-        console.error(err);
+        ServerMessage.error(req, res, err.status || 500, err.message || 'Mongo database find token error');
+        return err;
       });
     }
   }

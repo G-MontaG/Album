@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+//const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
@@ -99,6 +100,7 @@ module.exports = {
       disable: false,
       allChunks: true
     }),
+    //new OptimizeCssAssetsPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
       inject: 'body',

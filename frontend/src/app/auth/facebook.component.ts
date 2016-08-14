@@ -17,7 +17,7 @@ export class FacebookComponent implements OnInit {
 
   ngOnInit() {
     this._facebookService.getFacebookUser().subscribe(
-      data => this._router.navigate(['Dashboard'])
+      data => this._router.navigate(['/dashboard'])
     );
   }
 }

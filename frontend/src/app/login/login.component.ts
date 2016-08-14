@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   loginSubmit() {
     this._loginService.postLogin(this.loginForm.value).subscribe(
-      data => this._router.navigate(['Dashboard'])
+      data => this._router.navigate(['/dashboard'])
     );
   }
 
