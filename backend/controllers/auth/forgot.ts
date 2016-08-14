@@ -18,7 +18,7 @@ export function forgotPasswordEmailHandler(req: express.Request, res: express.Re
   } else {
     let _data = req.body.data;
     let currentUser: UserType;
-    User.findOne({email: _data.email}).exec().then((err, user) => {
+    User.findOne({email: _data.email}).exec().then((user) => {
       if (!user) {
         let err: ServerError = new Error("Email not found");
         err.status = 401;
@@ -123,6 +123,7 @@ export function forgotPasswordNewPasswordHandler(req: RequestWithAuthSession, re
       } else {
         user.password = _data.password;
         delete _data.password;
+        currentUser = user;
         return user.cryptPassword();
       }
     }).then(() => {

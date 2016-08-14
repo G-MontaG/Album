@@ -6,6 +6,7 @@ import * as cs from './constants';
 const User = require('../../model/user');
 import {ServerMessage} from '../../helpers/serverMessage';
 import {RequestWithAuthSession} from "./requestSession";
+import {UserType} from "../../model/user";
 
 export function loginHandler(req: RequestWithAuthSession, res: express.Response) {
   req.checkBody('data.email', 'Email is not valid').isEmail();
@@ -30,16 +31,14 @@ export function loginHandler(req: RequestWithAuthSession, res: express.Response)
     } else {
       req.session.loginPasswordAttempts++;
       let _data = req.body.data;
-      let findUser = {
-        _id: ''
-      };
+      let currentUser: UserType;
       User.findOne({email: _data.email}).exec().then((user) => {
         if (!user) {
           let err:ServerError = new Error('Email not found');
           err.status = 401;
           throw err;
         } else {
-          findUser = user;
+          currentUser = user;
           return user.checkPassword(_data.password);
         }
       }).then((result) => {
@@ -53,7 +52,7 @@ export function loginHandler(req: RequestWithAuthSession, res: express.Response)
         }
       }).then(() => {
         let _token = jwt.sign({
-          id: findUser._id,
+          id: currentUser._id,
           'user-agent': req.headers['user-agent']
         }, process.env.JWT_SECRET, {
           algorithm: cs.tokenAlg,
