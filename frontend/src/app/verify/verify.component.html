@@ -1,8 +1,10 @@
 <div class="verify">
   <div class="verify__form">
-    <div class="verify__content">
+    <div class="verify__to-dashboard">
       <button type="button" class="btn btn-default btn-block" routerLink="/dashboard">Back to Dashboard</button>
       <hr>
+    </div>
+    <div class="verify__content">
       <form id="verifyEmailForm" role="form" [formGroup]="verifyEmailForm" (ngSubmit)="verifyEmailSubmit()">
         <div class="form-group">
           <label class="control-label" for="verifyEmailFormToken">Token</label>

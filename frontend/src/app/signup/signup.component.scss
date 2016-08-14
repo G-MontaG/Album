@@ -3,7 +3,7 @@
   @include position(fixed, $top: 0, $left: 0, $right: 0, $bottom: 0);
   @include flex-container(flex, $align-items: center, $justify-content: center);
   &__form {
-    @include shadow-2dp;
+    @include shadow-2dp();
     width: 100%;
     max-width: 350px;
     margin: 15px;

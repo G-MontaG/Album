@@ -18,7 +18,7 @@ export class VerifyService {
       'Authorization': 'Bearer ' + jwt
     });
     let options = new RequestOptions({headers: headers});
-    return this.http.post('/api/verify-email', body, options)
+    return this.http.post('/auth/verify-email', body, options)
       .map(res => res.json())
       .do((data) => console.log(data))
       .catch(this._errorService.handleError);

@@ -96,7 +96,7 @@ export function facebookUserHandler(req: RequestWithAuthSession, res: express.Re
                     Password: ${_data.password}
                     
                     This is a token for your account 
-                    ${user.emailVerifyToken.value.slice(0, cs.emailTokenLength / 2)} ${user.emailVerifyToken.value.slice(cs.emailTokenLength / 2, cs.emailTokenLength)}
+                    ${user.emailVerifyToken.value}
                     Please go back and enter it in your profile to verify your email.`
         };
         delete _data.password;
