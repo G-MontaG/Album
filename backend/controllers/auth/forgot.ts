@@ -83,7 +83,7 @@ export function forgotPasswordTokenHandler(req: RequestWithAuthSession, res: exp
           err.status = 401;
           throw err;
         } else {
-          delete user.forgotPasswordToken;
+          user.forgotPasswordToken = undefined;
           return user.save();
         }
       }).then((user) => {
