@@ -8,7 +8,7 @@ const User = require('../../model/user');
 import {ServerMessage} from '../../helpers/serverMessage';
 import {RequestWithAuthSession, AuthData} from "./requestSession";
 
-const getFacebookCodeUrl = `https://www.facebook.com/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&scope=public_profile%2Cemail&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Ffacebook-auth%2Fresponse&response_type=code`;
+const getFacebookCodeUrl = `https://www.facebook.com/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&scope=public_profile%2Cemail&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fauth%2Ffacebook-auth%2Fresponse&response_type=code`;
 
 export function facebookCodeHandler(req: express.Request, res: express.Response) {
   res.send({redirectUrl: getFacebookCodeUrl});
@@ -23,7 +23,7 @@ export function facebookTokenHandler(req: RequestWithAuthSession, res: express.R
     console.error('Facebook authentication error. Can not get code');
   } else {
     new Promise((resolve, reject) => {
-      let tokenReq = https.get(`https://graph.facebook.com/v2.6/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&code=${req.query.code}&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Ffacebook-auth%2Fresponse`, (resToken) => {
+      let tokenReq = https.get(`https://graph.facebook.com/v2.6/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&code=${req.query.code}&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fauth%2Ffacebook-auth%2Fresponse`, (resToken) => {
         let data = '';
         resToken.on('data', (chunk) => {
           data += chunk;
@@ -106,12 +106,11 @@ export function facebookUserHandler(req: RequestWithAuthSession, res: express.Re
             err.status = 500;
             throw err;
           }
-          return user;
         });
       }).then((user) => {
         // if you keep in token sensitive info encrypt it before use jwt.sign()
         let _token = jwt.sign({
-          id: user._id,
+          id: newUser._id,
           'user-agent': req.headers['user-agent']
         }, process.env.JWT_SECRET, {
           algorithm: cs.tokenAlg,

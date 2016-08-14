@@ -8,7 +8,7 @@ const User = require('../../model/user');
 import {ServerMessage} from '../../helpers/serverMessage';
 import {RequestWithAuthSession, AuthData} from "./requestSession";
 
-const getGoogleCodeUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Fgoogle-auth%2Fresponse&response_type=code&client_id=${process.env.GOOGLE_ID}`;
+const getGoogleCodeUrl = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fauth%2Fgoogle-auth%2Fresponse&response_type=code&client_id=${process.env.GOOGLE_ID}`;
 
 export function googleCodeHandler(req: express.Request, res: express.Response) {
   res.send({redirectUrl: getGoogleCodeUrl});
@@ -44,7 +44,7 @@ export function googleTokenHandler(req: RequestWithAuthSession, res: express.Res
         err.status = 401;
         reject(err);
       });
-      tokenReq.write(`code=${req.query.code}&client_id=${process.env.GOOGLE_ID}&client_secret=${process.env.GOOGLE_KEY}&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fapi%2Fgoogle-auth%2Fresponse&grant_type=authorization_code`);
+      tokenReq.write(`code=${req.query.code}&client_id=${process.env.GOOGLE_ID}&client_secret=${process.env.GOOGLE_KEY}&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fauth%2Fgoogle-auth%2Fresponse&grant_type=authorization_code`);
       tokenReq.end();
     }).then((authData: AuthData) => {
       let userDataReq = https.get(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${authData.access_token}`, (resUser) => {

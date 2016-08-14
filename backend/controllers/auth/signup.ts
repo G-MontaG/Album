@@ -41,7 +41,7 @@ export function signupLocalHandler(req: express.Request, res: express.Response) 
         from: 'arthur.osipenko@gmail.com',
         subject: 'Hello on XXX',
         text: `Hello. This is a token for your account 
-                ${user.emailVerifyToken.value.slice(0, cs.emailTokenLength / 2)} ${user.emailVerifyToken.value.slice(cs.emailTokenLength / 2, cs.emailTokenLength)}
+                ${user.emailVerifyToken.value}
                 Please go back and enter it in your profile to verify your email.`
       };
       cs.transporter.sendMail(mailOptions, function (err) {
